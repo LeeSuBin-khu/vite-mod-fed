@@ -2,16 +2,20 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import federation from "@originjs/vite-plugin-federation";
 
-// https://vitejs.dev/config/
+// host
 export default defineConfig({
   plugins: [
     react(),
     federation({
       name: "host-app",
+      filename: "remoteEntry.js",
       remotes: {
-        remoteApp: "http://localhost:5001/assets/remoteEntry.js",
+        remoteApp: "http://localhost:5001/dist/assets/remoteEntry.js"
       },
-      shared: ["react", "react-dom"],
+      exposes: {
+        "./AuthProvider": "./src/contexts/AuthProvider",
+      },
+      shared: ["react", "react-dom", "recoil"],
     }),
   ],
   build: {
